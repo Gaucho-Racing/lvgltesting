@@ -1,4 +1,4 @@
-Depends on CMake, pkg-config, and SDL2
+Depends on CMake, pkgconf, and SDL2
 
 Compile with
 `cmake .`
