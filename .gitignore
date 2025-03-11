@@ -1,0 +1,9 @@
+/Makefile
+/CMakeCache.txt
+/CMakeFiles/
+/cmake_install.cmake
+
+.*
+!.gitignore
+!.gitattributes
+!.gitmodules
