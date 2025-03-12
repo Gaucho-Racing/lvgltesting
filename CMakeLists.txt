@@ -7,6 +7,10 @@ pkg_check_modules(SDL2 REQUIRED sdl2)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC
     .
+    ${SDL2_INCLUDE_DIRS}
+)
+target_compile_options(lvgl PUBLIC
+    ${SDL2_CFLAGS_OTHER}
 )
 
 target_sources(lvgltest PRIVATE
@@ -14,7 +18,7 @@ target_sources(lvgltest PRIVATE
 )
 target_link_libraries(lvgltest
     lvgl
-    ${SDL2_LIBRARIES}
+    ${SDL2_LINK_LIBRARIES}
 )
 target_include_directories(lvgltest PUBLIC
     ${SDL2_INCLUDE_DIRS}
