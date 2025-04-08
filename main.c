@@ -3,6 +3,9 @@
 #include "lvgl/lvgl.h"
 
 int main() {
+
+    char* data = "100 mph";
+
     lv_init();
 
     lv_disp_t * disp = lv_sdl_window_create(800, 480);
@@ -63,5 +66,6 @@ int main() {
         // looped code here
         idle_time = lv_timer_handler();
         SDL_Delay(idle_time);
+        lv_label_set_text_static(speed, data);
     }
 }
