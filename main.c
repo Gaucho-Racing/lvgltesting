@@ -4,7 +4,10 @@
 
 int main() {
 
-    char* data = "100 mph";
+    static char data[10] = "1000";
+    char old_data[10] = "1000";
+
+    const char* new_data = "100000 mph";
 
     lv_init();
 
@@ -62,10 +65,19 @@ int main() {
     
     // --- LVGL Main Loop --- 
     uint32_t idle_time;
+    int i = 0;
+
     while(1) {
+
+        if (i == 1000) {
+            lv_memcpy(data, new_data, 10);
+            lv_label_set_text_static(speed, data);
+        } 
+        i++;
         // looped code here
+        
+
         idle_time = lv_timer_handler();
         SDL_Delay(idle_time);
-        lv_label_set_text_static(speed, data);
     }
 }
