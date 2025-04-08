@@ -18,6 +18,7 @@ int main() {
         lv_style_set_flex_flow(&screenStyle, LV_FLEX_FLOW_COLUMN);
   
     static lv_style_t flexRowStyle;
+    
         lv_style_init(&flexRowStyle);
         lv_style_set_width(&flexRowStyle, lv_pct(100)); // Make rows take full width
         lv_style_set_height(&flexRowStyle, LV_SIZE_CONTENT); // Row height based on content
