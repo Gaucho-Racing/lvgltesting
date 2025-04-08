@@ -11,22 +11,22 @@ int main() {
         return 1;
     }
 
-    // STYLES
+    // --- WIDGET STYLES ---
     static lv_style_t screenStyle;
-    lv_style_init(&screenStyle);
-    lv_style_set_layout(&screenStyle, LV_LAYOUT_FLEX);
-    lv_style_set_flex_flow(&screenStyle, LV_FLEX_FLOW_COLUMN);
+        lv_style_init(&screenStyle);
+        lv_style_set_layout(&screenStyle, LV_LAYOUT_FLEX);
+        lv_style_set_flex_flow(&screenStyle, LV_FLEX_FLOW_COLUMN);
   
     static lv_style_t flexRowStyle;
-    lv_style_init(&flexRowStyle);
-    lv_style_set_width(&flexRowStyle, lv_pct(100)); // Make rows take full width
-    lv_style_set_height(&flexRowStyle, LV_SIZE_CONTENT); // Row height based on content
-    lv_style_set_flex_flow(&flexRowStyle, LV_FLEX_FLOW_ROW);
-    lv_style_set_layout(&flexRowStyle, LV_LAYOUT_FLEX);
-    lv_style_set_border_width(&flexRowStyle, 2);
-    lv_style_set_flex_grow(&flexRowStyle, 1); // Specifically in context of columnn
+        lv_style_init(&flexRowStyle);
+        lv_style_set_width(&flexRowStyle, lv_pct(100)); // Make rows take full width
+        lv_style_set_height(&flexRowStyle, LV_SIZE_CONTENT); // Row height based on content
+        lv_style_set_flex_flow(&flexRowStyle, LV_FLEX_FLOW_ROW);
+        lv_style_set_layout(&flexRowStyle, LV_LAYOUT_FLEX);
+        lv_style_set_border_width(&flexRowStyle, 2);
+        lv_style_set_flex_grow(&flexRowStyle, 1); // Specifically in context of columnn
 
-    // SCREEN SETUP
+    // --- SCREEN SETUP ---
     lv_obj_t * screen = lv_screen_active();
     lv_obj_add_style(screen, &screenStyle, 0);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x000000), LV_PART_MAIN);
@@ -56,7 +56,7 @@ int main() {
         lv_label_set_text(state, "State: ");
 
     
-    // LVGL Main Loop
+    // --- LVGL Main Loop --- 
     uint32_t idle_time;
     while(1) {
         // looped code here
