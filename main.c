@@ -4,6 +4,14 @@
 
 int main() {
 
+    /**
+     * @brief Notes about LVGL
+     * 
+     * lv_obj_set_flex_grow - this edits the way children of a flex container stretch along the main axis, NOT how its own children stretch
+     * lv_obj_set_flex_flow - this edits the main axis of how its children are placed
+     * 
+     */
+
     static char data[10] = "1000";
     char old_data[10] = "1000";
 
@@ -47,7 +55,7 @@ int main() {
     // Code for top flex row 
     lv_obj_t * flexRowTop = lv_obj_create(screen);
     lv_obj_add_style(flexRowTop, &flexRowStyle, 0);
-    lv_obj_set_flex_align(flexRowTop, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_SPACE_AROUND);
+    lv_obj_set_flex_align(flexRowTop, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_SPACE_EVENLY);
 
         lv_obj_t * boxTop1 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop1, LV_FLEX_COLUMN);
@@ -55,24 +63,46 @@ int main() {
         lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop1, lv_color_hex(0xb6d4be), 0);
         lv_obj_set_style_pad_all(boxTop1, 20, 0); 
+        lv_obj_t * placeholder1 = lv_label_create(boxTop1);
+        lv_label_set_text(placeholder1, "\n\nVoltage: x V\n\nSOC: x %\n\nTotal Power: x W\n\n");
 
         lv_obj_t * boxTop2 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop2, LV_FLEX_COLUMN);
         lv_obj_set_flex_grow(boxTop2, 4); // TODO: edit later for real screen
+        lv_obj_set_content_height(boxTop2, lv_pct(100));
         lv_obj_set_size(boxTop2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop2, lv_color_hex(0xb6d4be), 0);
         lv_obj_set_style_pad_all(boxTop2, 20, 0); 
-        lv_obj_t * speed = lv_label_create(boxTop2);
-        lv_label_set_text(speed, "Speed: x mph");
-        lv_obj_t * state = lv_label_create(boxTop2);
-        lv_label_set_text(state, "State: ");
+        
+            lv_obj_t * speed = lv_label_create(boxTop2);
+            lv_label_set_text(speed, "\n\nSpeed: x mph\n");
+            lv_obj_t * state = lv_label_create(boxTop2);
+            lv_label_set_text(state, "\nState: \n\n");
 
         lv_obj_t * boxTop3 = lv_obj_create(flexRowTop);
-        lv_obj_set_flex_flow(boxTop3, LV_FLEX_FLOW_COLUMN);
+        lv_obj_set_flex_flow(boxTop3, LV_FLEX_FLOW_ROW);
         lv_obj_set_flex_grow(boxTop3, 2);
         lv_obj_set_size(boxTop3, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop3, lv_color_hex(0xb6d4be), 0);
         lv_obj_set_style_pad_all(boxTop3, 20, 0); // Add some padding inside the box
+
+            lv_obj_t * dialCol = lv_obj_create(boxTop3);
+            lv_obj_set_flex_flow(dialCol, LV_FLEX_FLOW_COLUMN);
+            lv_obj_set_flex_grow(dialCol, 1);
+
+            lv_obj_t * dialValCol = lv_obj_create(boxTop3);
+            lv_obj_set_flex_flow(dialValCol, LV_FLEX_FLOW_COLUMN);
+            lv_obj_set_flex_grow(dialValCol, 1);
+
+                lv_obj_t * dial1 = lv_label_create(dialCol); // TODO: turn into image list
+                lv_label_set_text(dial1, "D1 Here");
+                lv_obj_t * dial2 = lv_label_create(dialCol); // TODO: turn into image list
+                lv_label_set_text(dial2, "D2 Here");
+                lv_obj_t * dial3 = lv_label_create(dialCol); // TODO: turn into image list
+                lv_label_set_text(dial3, "D3 Here");
+
+                lv_obj_t * placeholder3 = lv_label_create(dialValCol);
+                lv_label_set_text(placeholder3, "\n\nC: x A\n\nTM: x\n\nRn: x\n\n");
 
     // Code for bottom flex row 
     lv_obj_t * flexRowBottom = lv_obj_create(screen);
