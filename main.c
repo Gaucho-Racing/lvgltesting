@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <SDL2/SDL.h>
 #include "lvgl/lvgl.h"
+#include "pos1.c"
 
 int main() {
 
@@ -11,6 +12,10 @@ int main() {
      * lv_obj_set_flex_flow - this edits the main axis of how its children are placed
      * 
      */
+
+    // Images
+
+    LV_IMAGE_DECLARE(pos1);
 
     static char data[10] = "1000";
     char old_data[10] = "1000";
@@ -94,8 +99,8 @@ int main() {
             lv_obj_set_flex_flow(dialValCol, LV_FLEX_FLOW_COLUMN);
             lv_obj_set_flex_grow(dialValCol, 1);
 
-                lv_obj_t * dial1 = lv_label_create(dialCol); // TODO: turn into image list
-                lv_label_set_text(dial1, "D1 Here");
+                lv_obj_t * dial1 = lv_image_create(dialCol);
+                lv_image_set_src(dial1, &pos1);
                 lv_obj_t * dial2 = lv_label_create(dialCol); // TODO: turn into image list
                 lv_label_set_text(dial2, "D2 Here");
                 lv_obj_t * dial3 = lv_label_create(dialCol); // TODO: turn into image list
