@@ -2,6 +2,13 @@
 #include <SDL2/SDL.h>
 #include "lvgl/lvgl.h"
 #include "pos1.c"
+#include "pos2.c"
+#include "pos3.c"
+#include "pos4.c"
+#include "pos5.c"
+#include "pos6.c"
+#include "pos7.c"
+#include "pos8.c"
 
 int main() {
 
@@ -16,6 +23,8 @@ int main() {
     // Images
 
     LV_IMAGE_DECLARE(pos1);
+    LV_IMAGE_DECLARE(pos2);
+    LV_IMAGE_DECLARE(pos3);
 
     static char data[10] = "1000";
     char old_data[10] = "1000";
@@ -101,10 +110,13 @@ int main() {
 
                 lv_obj_t * dial1 = lv_image_create(dialCol);
                 lv_image_set_src(dial1, &pos1);
-                lv_obj_t * dial2 = lv_label_create(dialCol); // TODO: turn into image list
-                lv_label_set_text(dial2, "D2 Here");
-                lv_obj_t * dial3 = lv_label_create(dialCol); // TODO: turn into image list
-                lv_label_set_text(dial3, "D3 Here");
+                lv_image_set_scale(dial1, 128);
+                lv_obj_t * dial2 = lv_image_create(dialCol);
+                lv_image_set_src(dial2, &pos2);
+                lv_image_set_scale(dial2, 128);
+                lv_obj_t * dial3 = lv_image_create(dialCol);
+                lv_image_set_src(dial3, &pos3);
+                lv_image_set_scale(dial3, 128);
 
                 lv_obj_t * placeholder3 = lv_label_create(dialValCol);
                 lv_label_set_text(placeholder3, "\n\nC: x A\n\nTM: x\n\nRn: x\n\n");
@@ -115,18 +127,60 @@ int main() {
     lv_obj_set_flex_align(flexRowBottom, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_SPACE_AROUND);
 
         lv_obj_t * boxBottom1 = lv_obj_create(flexRowBottom);
-        lv_obj_set_flex_flow(boxBottom1, LV_FLEX_FLOW_COLUMN); // Separates top wheel and bottom wheels
-        lv_obj_set_flex_grow(boxBottom1, 1);
+        lv_obj_set_flex_flow(boxBottom1, LV_FLEX_FLOW_ROW); // Separates top wheel and bottom wheels
+        lv_obj_set_flex_grow(boxBottom1, 2);
         lv_obj_set_size(boxBottom1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxBottom1, lv_color_hex(0xb6d4be), 0);
         lv_obj_set_style_pad_all(boxBottom1, 20, 0); // Add some padding inside the box
+
+            lv_obj_t * boxBottom1Col1 = lv_obj_create(boxBottom1);
+            lv_obj_set_flex_flow(boxBottom1Col1, LV_FLEX_FLOW_COLUMN); 
+
+                lv_obj_t * tireFL = lv_label_create(boxBottom1Col1);
+                lv_label_set_text(tireFL, "tireFL");
+
+                lv_obj_t * tireFR = lv_label_create(boxBottom1Col1);
+                lv_label_set_text(tireFR, "tireFR");
+
+            lv_obj_t * boxBottom1Col2 = lv_obj_create(boxBottom1);
+            lv_obj_set_flex_flow(boxBottom1Col2, LV_FLEX_FLOW_COLUMN); 
+
+                lv_obj_t * tireRL = lv_label_create(boxBottom1Col2);
+                lv_label_set_text(tireRL, "tireRL");
+
+                lv_obj_t * tireRR = lv_label_create(boxBottom1Col2);
+                lv_label_set_text(tireRR, "tireRR");
+
         lv_obj_t * boxBottom2 = lv_obj_create(flexRowBottom);
-        lv_obj_set_flex_flow(boxBottom2, LV_FLEX_FLOW_ROW);
-        lv_obj_set_flex_grow(boxBottom2, 1);
+        lv_obj_set_flex_flow(boxBottom2, LV_FLEX_FLOW_COLUMN);
+        lv_obj_set_flex_grow(boxBottom2, 3);
         lv_obj_set_size(boxBottom2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxBottom2, lv_color_hex(0xb6d4be), 0);
-        lv_obj_set_style_pad_all(boxBottom2, 20, 0); // Add some padding inside the box
+        //lv_obj_set_style_pad_all(boxBottom2, 20, 0); // Add some padding inside the box
 
+            // most important temperatures to display will probably be maxCellTemp, motorTemp, inverterTemp, brakeTemp
+            
+            // honestly we can probably get rid of this label later down the line; driver can tell temp from celsius/fahrenheit
+            lv_obj_t * temperature_label = lv_label_create(boxBottom2);
+            //lv_obj_set_flex_align(temperature_label, LV_FLEX_ALIGN_CENTER, 0, 0);
+            lv_label_set_text(temperature_label, "Temperatures:");
+
+            lv_obj_t * temperatures = lv_obj_create(boxBottom2);
+            lv_obj_set_flex_flow(temperatures, LV_FLEX_FLOW_ROW);
+            lv_obj_set_size(temperatures, LV_PCT(100), LV_SIZE_CONTENT);
+            lv_obj_set_flex_align(temperatures, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+                    lv_obj_t * cellTemp = lv_label_create(temperatures);
+                    lv_label_set_text(cellTemp, "Cell: ");
+
+                    lv_obj_t * motorTemp = lv_label_create(temperatures);
+                    lv_label_set_text(motorTemp, "Motor: ");
+
+                    lv_obj_t * inverterTemp = lv_label_create(temperatures);
+                    lv_label_set_text(inverterTemp, "Inverter: ");
+                    
+                    lv_obj_t * brakeTemp = lv_label_create(temperatures);
+                    lv_label_set_text(brakeTemp, "Brakes: ");
     
     // --- LVGL Main Loop --- 
     uint32_t idle_time;
