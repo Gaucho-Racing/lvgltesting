@@ -136,20 +136,41 @@ int main() {
             lv_obj_t * boxBottom1Col1 = lv_obj_create(boxBottom1);
             lv_obj_set_flex_flow(boxBottom1Col1, LV_FLEX_FLOW_COLUMN); 
 
-                lv_obj_t * tireFL = lv_label_create(boxBottom1Col1);
-                lv_label_set_text(tireFL, "tireFL");
+                lv_obj_t * tireFL = lv_obj_create(boxBottom1Col1);
+                lv_obj_set_flex_flow(tireFL, LV_FLEX_FLOW_ROW); 
 
-                lv_obj_t * tireFR = lv_label_create(boxBottom1Col1);
-                lv_label_set_text(tireFR, "tireFR");
+                    lv_obj_t * tireFLCol = lv_obj_create(tireFL);
+                    lv_obj_set_flex_flow(tireFLCol, LV_FLEX_FLOW_COLUMN); 
+
+                    lv_obj_t * tireFLImage = lv_obj_create(tireFL); // Convert to image later
+
+                lv_obj_t * tireFR = lv_obj_create(boxBottom1Col1);
+                lv_obj_set_flex_flow(tireFR, LV_FLEX_FLOW_ROW); 
+
+                    lv_obj_t * tireFRCol = lv_obj_create(tireFR);
+                    lv_obj_set_flex_flow(tireFRCol, LV_FLEX_FLOW_COLUMN); 
+
+                    lv_obj_t * tireFRImage = lv_obj_create(tireFR); // Convert to image later
 
             lv_obj_t * boxBottom1Col2 = lv_obj_create(boxBottom1);
             lv_obj_set_flex_flow(boxBottom1Col2, LV_FLEX_FLOW_COLUMN); 
 
-                lv_obj_t * tireRL = lv_label_create(boxBottom1Col2);
-                lv_label_set_text(tireRL, "tireRL");
+                lv_obj_t * tireRL = lv_obj_create(boxBottom1Col2);
+                lv_obj_set_flex_flow(tireRL, LV_FLEX_FLOW_ROW);
 
-                lv_obj_t * tireRR = lv_label_create(boxBottom1Col2);
-                lv_label_set_text(tireRR, "tireRR");
+                    lv_obj_t * tireRLCol = lv_obj_create(tireRL);
+                    lv_obj_set_flex_flow(tireRLCol, LV_FLEX_FLOW_COLUMN); 
+
+                    lv_obj_t * tireRLImage = lv_obj_create(tireRL); // Convert to image later
+
+                lv_obj_t * tireRR = lv_obj_create(boxBottom1Col2);
+                lv_obj_set_flex_flow(tireRR, LV_FLEX_FLOW_ROW);
+
+                    lv_obj_t * tireRRCol = lv_obj_create(tireRR);
+                    lv_obj_set_flex_flow(tireRRCol, LV_FLEX_FLOW_COLUMN); 
+
+                    lv_obj_t * tireRRImage = lv_obj_create(tireRR); // Convert to image later
+
 
         lv_obj_t * boxBottom2 = lv_obj_create(flexRowBottom);
         lv_obj_set_flex_flow(boxBottom2, LV_FLEX_FLOW_COLUMN);
