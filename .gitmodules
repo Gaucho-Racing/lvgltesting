@@ -1,3 +1,4 @@
 [submodule "lvgl"]
 	path = lvgl
-	url = https://github.com/lvgl/lvgl.git
+	url = ../../lvgl/lvgl.git
+	branch = master
