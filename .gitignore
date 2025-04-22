@@ -2,9 +2,10 @@
 /CMakeCache.txt
 /CMakeFiles/
 /cmake_install.cmake
+build
 
 .*
 !.gitignore
 !.gitattributes
 !.gitmodules
-build
+!.vscode
