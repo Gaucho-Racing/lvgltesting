@@ -1,4 +1,5 @@
 project(lvgltest)
+cmake_minimum_required(VERSION 3.25)
 add_executable(lvgltest)
 
 find_package(PkgConfig REQUIRED)
