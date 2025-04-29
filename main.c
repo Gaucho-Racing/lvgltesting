@@ -15,6 +15,25 @@
 #define GR_PRPL 0x7920FF
 #define GR_GRAY 0x9AA3B0
 
+// --- Global or static variables needed in the timer callback ---
+lv_obj_t * speed;
+static uint16_t speedData = 1; // Initial speed data
+static char speedBuffer[32];   // Buffer for the speed string
+
+// --- Timer Callback Function ---
+static void speed_update_timer_cb(lv_timer_t * timer) {
+    speedData++;
+    if (speedData > 100) {
+        speedData = 1;
+    }
+
+    // Format the string
+    snprintf(speedBuffer, sizeof(speedBuffer), "Speed: %d mph", speedData);
+    if (speed) {
+        lv_label_set_text(speed, speedBuffer);
+    }
+}
+
 int main() {
 
     /**
@@ -30,11 +49,6 @@ int main() {
     LV_IMAGE_DECLARE(pos1);
     LV_IMAGE_DECLARE(pos2);
     LV_IMAGE_DECLARE(pos3);
-
-    static char data[10] = "1000";
-    char old_data[10] = "1000";
-
-    const char* new_data = "100000 mph";
 
     lv_init();
 
@@ -94,8 +108,8 @@ int main() {
         lv_obj_set_style_bg_color(boxTop2, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop2, 20, 0); 
         
-            lv_obj_t * speed = lv_label_create(boxTop2);
-            lv_label_set_text(speed, "\n\nSpeed: x mph\n");
+            speed = lv_label_create(boxTop2);
+            lv_label_set_text_static(speed, speedBuffer);
             lv_obj_t * state = lv_label_create(boxTop2);
             lv_label_set_text(state, "\nState: \n\n");
 
@@ -288,11 +302,10 @@ int main() {
     // --- LVGL Main Loop --- 
     uint32_t idle_time;
 
-    while(1) {
+    lv_timer_create(speed_update_timer_cb, 1000, NULL);
 
+    while(1) {
         lv_task_handler();
         lv_delay_ms(5);
-        // idle_time = lv_timer_handler();
-        // SDL_Delay(idle_time);
     }
 }
