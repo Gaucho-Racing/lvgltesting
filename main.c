@@ -31,6 +31,8 @@ static void speed_update_timer_cb(lv_timer_t * timer) {
     snprintf(speedBuffer, sizeof(speedBuffer), "Speed: %d mph", speedData);
     if (speed) {
         lv_label_set_text(speed, speedBuffer);
+        // Add this line for diagnostics:
+        lv_obj_invalidate(lv_screen_active()); // Invalidate the whole screen
     }
 }
 
