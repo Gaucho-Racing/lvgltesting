@@ -75,12 +75,18 @@ int main() {
         lv_style_set_layout(&flexRowStyle, LV_LAYOUT_FLEX);
         lv_style_set_border_width(&flexRowStyle, 0);
         lv_style_set_flex_grow(&flexRowStyle, 1); // Specifically in context of columnn
+        lv_style_set_pad_row(&flexRowStyle, 0);
+        lv_style_set_pad_column(&flexRowStyle, 0);
+        lv_style_set_margin_all(&flexRowStyle, 0);
 
     static lv_style_t flexColumnStyle;
 
         lv_style_init(&flexColumnStyle);
         lv_style_set_flex_flow(&flexColumnStyle, LV_FLEX_FLOW_COLUMN);
         lv_style_set_layout(&flexColumnStyle, LV_LAYOUT_FLEX);
+        lv_style_set_pad_row(&flexColumnStyle, 0);
+        lv_style_set_pad_column(&flexColumnStyle, 0);
+
 
     // --- SCREEN SETUP ---
     lv_obj_t * screen = lv_screen_active();
@@ -99,6 +105,7 @@ int main() {
         lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop1, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop1, 20, 0); 
+        lv_obj_add_style(boxTop1, &flexColumnStyle, 0);
         lv_obj_t * placeholder1 = lv_label_create(boxTop1);
         lv_label_set_text(placeholder1, "\n\nVoltage: x V\n\nSOC: x %\n\nTotal Power: x W\n\n");
 
@@ -109,6 +116,7 @@ int main() {
         lv_obj_set_size(boxTop2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop2, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop2, 20, 0); 
+        lv_obj_add_style(boxTop2, &flexColumnStyle, 0);
         
             speed = lv_label_create(boxTop2);
             lv_label_set_text_static(speed, speedBuffer);
@@ -121,14 +129,18 @@ int main() {
         lv_obj_set_size(boxTop3, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop3, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop3, 20, 0); // Add some padding inside the box
+        lv_obj_add_style(boxTop3, &flexRowStyle, 0);
+        
 
             lv_obj_t * dialCol = lv_obj_create(boxTop3);
             lv_obj_set_flex_flow(dialCol, LV_FLEX_FLOW_COLUMN);
             lv_obj_set_flex_grow(dialCol, 1);
+            lv_obj_add_style(dialCol, &flexColumnStyle, 0);
 
             lv_obj_t * dialValCol = lv_obj_create(boxTop3);
             lv_obj_set_flex_flow(dialValCol, LV_FLEX_FLOW_COLUMN);
             lv_obj_set_flex_grow(dialValCol, 1);
+            lv_obj_add_style(dialValCol, &flexColumnStyle, 0);
 
                 lv_obj_t * dial1 = lv_image_create(dialCol);
                 lv_image_set_src(dial1, &pos1);
