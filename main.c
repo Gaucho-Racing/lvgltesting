@@ -17,11 +17,25 @@
 
 // --- Global or static variables needed in the timer callback ---
 lv_obj_t * speed;
-static uint16_t speedData = 1; // Initial speed data
-static char speedBuffer[32];   // Buffer for the speed string
+lv_obj_t * state; 
+lv_obj_t * voltage;
+lv_obj_t * SoC;
+lv_obj_t * power;   
+
+static uint16_t speedData = 1;
+static char stateData[] = "Running"; 
+static uint16_t voltageData = 1;
+static uint16_t SoCData = 1;
+static uint16_t powerData = 1;
+
+static char speedBuffer[32];  
+static char stateBuffer[32];
+static char voltageBuffer[32];  
+static char SoCBuffer[32];  
+static char powerBuffer[32];  
 
 // --- Timer Callback Function ---
-static void speed_update_timer_cb(lv_timer_t * timer) {
+static void ecu_update_timer_cb(lv_timer_t * timer) {
     speedData++;
     if (speedData > 100) {
         speedData = 1;
@@ -31,8 +45,31 @@ static void speed_update_timer_cb(lv_timer_t * timer) {
     snprintf(speedBuffer, sizeof(speedBuffer), "Speed: %d mph", speedData);
     if (speed) {
         lv_label_set_text(speed, speedBuffer);
-        // Add this line for diagnostics:
-        lv_obj_invalidate(lv_screen_active()); // Invalidate the whole screen
+        lv_obj_invalidate(lv_screen_active()); 
+    }
+
+    snprintf(stateBuffer, sizeof(stateBuffer), "State: %s", stateData);
+    if (state) {
+        lv_label_set_text(state, stateBuffer);
+        lv_obj_invalidate(lv_screen_active()); 
+    }
+
+    snprintf(voltageBuffer, sizeof(voltageBuffer), "Voltage: %d V", voltageData);
+    if (voltage) {
+        lv_label_set_text(voltage, voltageBuffer);
+        lv_obj_invalidate(lv_screen_active()); 
+    }
+
+    snprintf(SoCBuffer, sizeof(SoCBuffer), "SoC: %d%%", SoCData);
+    if (SoC) {
+        lv_label_set_text(SoC, SoCBuffer);
+        lv_obj_invalidate(lv_screen_active()); 
+    }
+
+    snprintf(powerBuffer, sizeof(powerBuffer), "Power: %d V", powerData);
+    if (power) {
+        lv_label_set_text(power, powerBuffer);
+        lv_obj_invalidate(lv_screen_active()); 
     }
 }
 
@@ -99,8 +136,14 @@ int main() {
         lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_style_bg_color(boxTop1, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop1, 20, 0); 
-        lv_obj_t * placeholder1 = lv_label_create(boxTop1);
-        lv_label_set_text(placeholder1, "\n\nVoltage: x V\n\nSOC: x %\n\nTotal Power: x W\n\n");
+
+            voltage = lv_label_create(boxTop1);
+            lv_label_set_text(voltage, voltageBuffer);
+            SoC = lv_label_create(boxTop1);
+            lv_label_set_text(SoC, SoCBuffer);
+            power = lv_label_create(boxTop1);
+            lv_label_set_text(power, powerBuffer);
+
 
         lv_obj_t * boxTop2 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop2, LV_FLEX_COLUMN);
@@ -112,8 +155,8 @@ int main() {
         
             speed = lv_label_create(boxTop2);
             lv_label_set_text_static(speed, speedBuffer);
-            lv_obj_t * state = lv_label_create(boxTop2);
-            lv_label_set_text(state, "\nState: \n\n");
+            state = lv_label_create(boxTop2);
+            lv_label_set_text(state, stateBuffer);
 
         lv_obj_t * boxTop3 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop3, LV_FLEX_FLOW_ROW);
@@ -304,7 +347,7 @@ int main() {
     // --- LVGL Main Loop --- 
     uint32_t idle_time;
 
-    lv_timer_create(speed_update_timer_cb, 1000, NULL);
+    lv_timer_create(ecu_update_timer_cb, 1000, NULL);
 
     while(1) {
         lv_task_handler();
