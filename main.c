@@ -14,6 +14,12 @@
 #define GR_PINK 0xEF0DA1
 #define GR_PRPL 0x7920FF
 #define GR_GRAY 0x9AA3B0
+#define TOP_HEIGHT 200
+#define GRID_ROWS 2
+#define GRID_COLUMNS 4
+#define CELL_WIDTH_PX 20
+#define CELL_HEIGHT_PX 20
+
 
 // --- Global or static variables needed in the timer callback ---
 lv_obj_t * speed;
@@ -33,6 +39,8 @@ static char stateBuffer[32];
 static char voltageBuffer[32];  
 static char SoCBuffer[32];  
 static char powerBuffer[32];  
+
+lv_obj_t * gridCells[GRID_ROWS * GRID_COLUMNS];
 
 // --- Timer Callback Function ---
 static void ecu_update_timer_cb(lv_timer_t * timer) {
@@ -72,6 +80,71 @@ static void ecu_update_timer_cb(lv_timer_t * timer) {
         lv_obj_invalidate(lv_screen_active()); 
     }
 }
+
+void createGrid(lv_obj_t * parent_obj) { // Renamed to avoid conflict if 'parent' is a global
+
+    // --- NEW DEBUG PRINTS ---
+    lv_coord_t actual_width = lv_obj_get_width(parent_obj);
+    lv_coord_t actual_height = lv_obj_get_height(parent_obj);
+    printf("createGrid - Actual Parent width: %d, Actual Parent height: %d\n", (int)actual_width, (int)actual_height);
+
+    lv_coord_t pad_top = lv_obj_get_style_pad_top(parent_obj, 0);
+    lv_coord_t pad_bottom = lv_obj_get_style_pad_bottom(parent_obj, 0);
+    lv_coord_t pad_left = lv_obj_get_style_pad_left(parent_obj, 0);
+    lv_coord_t pad_right = lv_obj_get_style_pad_right(parent_obj, 0);
+    printf("createGrid - Parent padding (T,B,L,R): %d, %d, %d, %d\n", (int)pad_top, (int)pad_bottom, (int)pad_left, (int)pad_right);
+    // --- END NEW DEBUG ---
+
+    lv_coord_t content_w = lv_obj_get_content_width(parent_obj);
+    lv_coord_t content_h = lv_obj_get_content_height(parent_obj);
+
+    printf("createGrid - Parent content_w: %d, content_h: %d\n", (int)content_w, (int)content_h);
+
+    // Calculate the width/height of each "slot" in the grid
+    lv_coord_t slot_width = content_w / (GRID_COLUMNS + 2);
+    lv_coord_t slot_height = content_h / GRID_ROWS;
+
+    printf("createGrid - Slot_width: %d, slot_height: %d\n", (int)slot_width, (int)slot_height);
+
+    for (int i = 0; i < GRID_ROWS * GRID_COLUMNS; i++) {
+        lv_obj_t * tmp = lv_obj_create(parent_obj);
+        if (tmp == NULL) {
+            fprintf(stderr, "Failed to create grid cell %d\n", i);
+            continue;
+        }
+        lv_obj_set_size(tmp, CELL_WIDTH_PX, CELL_HEIGHT_PX);
+
+        int col = i % GRID_COLUMNS;
+        int row = i / GRID_COLUMNS;
+
+        // Calculate the top-left X and Y for the current slot
+        lv_coord_t current_slot_x = col * slot_width;
+        lv_coord_t current_slot_y = row * slot_height;
+
+        // Position the cell. To center it within its slot:
+        lv_coord_t cell_pos_x = current_slot_x + (slot_width - CELL_WIDTH_PX) / 2;
+        if (col > 1) cell_pos_x += slot_width * 2;
+        lv_coord_t cell_pos_y = current_slot_y + (slot_height - CELL_HEIGHT_PX) / 2;
+
+        printf("createGrid - Cell %d: x-pos %d, y-pos: %d\n", i, cell_pos_x, cell_pos_y);
+
+        // If you want to ensure cells don't overlap if CELL_WIDTH_PX > slot_width,
+        // you might need to cap CELL_WIDTH_PX or use smaller fixed sizes.
+        // For now, this centers the defined CELL_WIDTH_PX/CELL_HEIGHT_PX within the dynamic slot.
+
+        lv_obj_set_pos(tmp, cell_pos_x, cell_pos_y);
+        lv_obj_set_style_bg_color(tmp, lv_color_hex(0x00FF00), 0);
+        lv_obj_clear_flag(tmp, LV_OBJ_FLAG_SCROLLABLE); // Objects are not usually scrollable by default
+
+        // If you want circles (as your description mentioned "all the circles")
+        if (CELL_WIDTH_PX == CELL_HEIGHT_PX) { // Only makes sense for squares
+            lv_obj_set_style_radius(tmp, LV_RADIUS_CIRCLE, 0);
+        }
+
+        gridCells[i] = tmp;
+    }
+}
+
 
 int main() {
 
@@ -133,7 +206,8 @@ int main() {
         lv_obj_t * boxTop1 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop1, LV_FLEX_COLUMN);
         lv_obj_set_flex_grow(boxTop1, 2);
-        lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        // lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_height(boxTop1, TOP_HEIGHT);
         lv_obj_set_style_bg_color(boxTop1, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop1, 20, 0); 
 
@@ -149,7 +223,8 @@ int main() {
         lv_obj_set_flex_flow(boxTop2, LV_FLEX_COLUMN);
         lv_obj_set_flex_grow(boxTop2, 4); // TODO: edit later for real screen
         lv_obj_set_content_height(boxTop2, lv_pct(100));
-        lv_obj_set_size(boxTop2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        // lv_obj_set_size(boxTop2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_height(boxTop2, TOP_HEIGHT);
         lv_obj_set_style_bg_color(boxTop2, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop2, 20, 0); 
         
@@ -161,133 +236,123 @@ int main() {
         lv_obj_t * boxTop3 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop3, LV_FLEX_FLOW_ROW);
         lv_obj_set_flex_grow(boxTop3, 2);
-        lv_obj_set_size(boxTop3, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        // lv_obj_set_size(boxTop3, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_height(boxTop3, TOP_HEIGHT);
         lv_obj_set_style_bg_color(boxTop3, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxTop3, 20, 0); // Add some padding inside the box
 
-            lv_obj_t * dialCol = lv_obj_create(boxTop3);
-            lv_obj_set_flex_flow(dialCol, LV_FLEX_FLOW_COLUMN);
-            lv_obj_set_flex_grow(dialCol, 1);
-
-            lv_obj_t * dialValCol = lv_obj_create(boxTop3);
-            lv_obj_set_flex_flow(dialValCol, LV_FLEX_FLOW_COLUMN);
-            lv_obj_set_flex_grow(dialValCol, 1);
-
-                lv_obj_t * dial1 = lv_image_create(dialCol);
-                lv_image_set_src(dial1, &pos1);
-                lv_image_set_scale(dial1, 128);
-                lv_obj_t * dial2 = lv_image_create(dialCol);
-                lv_image_set_src(dial2, &pos2);
-                lv_image_set_scale(dial2, 128);
-                lv_obj_t * dial3 = lv_image_create(dialCol);
-                lv_image_set_src(dial3, &pos3);
-                lv_image_set_scale(dial3, 128);
-
-                lv_obj_t * placeholder3 = lv_label_create(dialValCol);
-                lv_label_set_text(placeholder3, "\n\nC: x A\n\nTM: x\n\nRn: x\n\n");
+                lv_obj_t * placeholder3 = lv_label_create(boxTop3);
+                lv_label_set_text(placeholder3, "C: x A\n\nTM: x\n\nRn: x\n\n");
 
     // Code for bottom flex row 
     lv_obj_t * flexRowBottom = lv_obj_create(screen);
     lv_obj_add_style(flexRowBottom, &flexRowStyle, 0);
     lv_obj_set_flex_align(flexRowBottom, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_SPACE_AROUND);
     lv_obj_set_style_bg_color(flexRowBottom, lv_color_hex(0x195297), 0);
+    // lv_obj_set_style_pad_all(flexRowBottom, 10, 0);
 
         lv_obj_t * boxBottom1 = lv_obj_create(flexRowBottom);
-        lv_obj_set_flex_flow(boxBottom1, LV_FLEX_FLOW_ROW); // Separates top wheel and bottom wheels
-        lv_obj_set_flex_grow(boxBottom1, 2);
-        lv_obj_set_size(boxBottom1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        // lv_obj_set_size(boxBottom1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_height(boxBottom1, TOP_HEIGHT);
+        lv_obj_set_width(boxBottom1, 200);
         lv_obj_set_style_bg_color(boxBottom1, lv_color_hex(GR_GRAY), 0);
         lv_obj_set_style_pad_all(boxBottom1, 20, 0); // Add some padding inside the box
 
-            lv_obj_t * boxBottom1Col1 = lv_obj_create(boxBottom1);
-            lv_obj_set_flex_flow(boxBottom1Col1, LV_FLEX_FLOW_COLUMN); 
+            lv_obj_update_layout(lv_screen_active());
+            createGrid(boxBottom1);
 
-                lv_obj_t * tireFL = lv_obj_create(boxBottom1Col1);
-                lv_obj_center(tireFL);
-                lv_obj_set_flex_flow(tireFL, LV_FLEX_FLOW_ROW); 
+            // lv_obj_t * boxBottom1Col1 = lv_obj_create(boxBottom1);
+            // lv_obj_set_flex_flow(boxBottom1Col1, LV_FLEX_FLOW_COLUMN); 
 
-                    lv_obj_t * tireFLCol = lv_obj_create(tireFL);
-                    lv_obj_set_flex_flow(tireFLCol, LV_FLEX_FLOW_COLUMN); 
+            //     lv_obj_t * tireFL = lv_obj_create(boxBottom1Col1);
+            //     lv_obj_center(tireFL);
+            //     lv_obj_set_flex_flow(tireFL, LV_FLEX_FLOW_ROW); 
 
-                        lv_obj_t * tempImageFL = lv_obj_create(tireFLCol);
-                        lv_obj_set_size(tempImageFL, 30, 30);
-                        lv_obj_set_style_bg_color(tempImageFL, lv_color_hex(0xFF0000), 0);
+            //         lv_obj_t * tireFLCol = lv_obj_create(tireFL);
+            //         lv_obj_set_flex_flow(tireFLCol, LV_FLEX_FLOW_COLUMN); 
 
-                        lv_obj_t * powerImageFL = lv_obj_create(tireFLCol);
-                        lv_obj_set_size(powerImageFL, 30, 30);
-                        lv_obj_set_style_bg_color(powerImageFL, lv_color_hex(0xFF0000), 0);
+            //             lv_obj_t * tempImageFL = lv_obj_create(tireFLCol);
+            //             lv_obj_set_size(tempImageFL, 30, 30);
+            //             lv_obj_set_style_bg_color(tempImageFL, lv_color_hex(0xFF0000), 0);
 
-                    lv_obj_t * tireFLImage = lv_obj_create(tireFL); // Convert to image later
-                    lv_obj_set_size(tireFLImage, 30, 30);
-                    lv_obj_set_style_bg_color(tireFLImage, lv_color_hex(0x000000), 0);
+            //             lv_obj_t * powerImageFL = lv_obj_create(tireFLCol);
+            //             lv_obj_set_size(powerImageFL, 30, 30);
+            //             lv_obj_set_style_bg_color(powerImageFL, lv_color_hex(0xFF0000), 0);
 
-                lv_obj_t * tireFR = lv_obj_create(boxBottom1Col1);
-                lv_obj_center(tireFR);
-                lv_obj_set_flex_flow(tireFR, LV_FLEX_FLOW_ROW); 
+            //         lv_obj_t * tireFLImage = lv_obj_create(tireFL); // Convert to image later
+            //         lv_obj_set_size(tireFLImage, 30, 30);
+            //         lv_obj_set_style_bg_color(tireFLImage, lv_color_hex(0x000000), 0);
 
-                    lv_obj_t * tireFRCol = lv_obj_create(tireFR);
-                    lv_obj_set_flex_flow(tireFRCol, LV_FLEX_FLOW_COLUMN); 
+            //     lv_obj_t * tireFR = lv_obj_create(boxBottom1Col1);
+            //     lv_obj_center(tireFR);
+            //     lv_obj_set_flex_flow(tireFR, LV_FLEX_FLOW_ROW); 
 
-                        lv_obj_t * tempImageFR = lv_obj_create(tireFRCol);
-                        lv_obj_set_size(tempImageFR, 30, 30);
-                        lv_obj_set_style_bg_color(tempImageFR, lv_color_hex(0xFF0000), 0);
+            //         lv_obj_t * tireFRCol = lv_obj_create(tireFR);
+            //         lv_obj_set_flex_flow(tireFRCol, LV_FLEX_FLOW_COLUMN); 
 
-                        lv_obj_t * powerImageFR = lv_obj_create(tireFRCol);
-                        lv_obj_set_size(powerImageFR, 30, 30);
-                        lv_obj_set_style_bg_color(powerImageFR, lv_color_hex(0xFF0000), 0);
+            //             lv_obj_t * tempImageFR = lv_obj_create(tireFRCol);
+            //             lv_obj_set_size(tempImageFR, 30, 30);
+            //             lv_obj_set_style_bg_color(tempImageFR, lv_color_hex(0xFF0000), 0);
 
-                    lv_obj_t * tireFRImage = lv_obj_create(tireFR); // Convert to image later
-                    lv_obj_set_size(tireFRImage, 30, 30);
-                    lv_obj_set_style_bg_color(tireFRImage, lv_color_hex(0x000000), 0);
+            //             lv_obj_t * powerImageFR = lv_obj_create(tireFRCol);
+            //             lv_obj_set_size(powerImageFR, 30, 30);
+            //             lv_obj_set_style_bg_color(powerImageFR, lv_color_hex(0xFF0000), 0);
 
-            lv_obj_t * boxBottom1Col2 = lv_obj_create(boxBottom1);
-            lv_obj_set_flex_flow(boxBottom1Col2, LV_FLEX_FLOW_COLUMN); 
+            //         lv_obj_t * tireFRImage = lv_obj_create(tireFR); // Convert to image later
+            //         lv_obj_set_size(tireFRImage, 30, 30);
+            //         lv_obj_set_style_bg_color(tireFRImage, lv_color_hex(0x000000), 0);
 
-                lv_obj_t * tireRL = lv_obj_create(boxBottom1Col2);
-                lv_obj_center(tireRL);
-                lv_obj_set_flex_flow(tireRL, LV_FLEX_FLOW_ROW);
+            // lv_obj_t * boxBottom1Col2 = lv_obj_create(boxBottom1);
+            // lv_obj_set_flex_flow(boxBottom1Col2, LV_FLEX_FLOW_COLUMN); 
 
-                    lv_obj_t * tireRLCol = lv_obj_create(tireRL);
-                    lv_obj_set_flex_flow(tireRLCol, LV_FLEX_FLOW_COLUMN);
+            //     lv_obj_t * tireRL = lv_obj_create(boxBottom1Col2);
+            //     lv_obj_center(tireRL);
+            //     lv_obj_set_flex_flow(tireRL, LV_FLEX_FLOW_ROW);
 
-                        lv_obj_t * tempImageRL = lv_obj_create(tireRLCol);
-                        lv_obj_set_size(tempImageRL, 30, 30);
-                        lv_obj_set_style_bg_color(tempImageRL, lv_color_hex(0xFF0000), 0);
+            //         lv_obj_t * tireRLCol = lv_obj_create(tireRL);
+            //         lv_obj_set_flex_flow(tireRLCol, LV_FLEX_FLOW_COLUMN);
 
-                        lv_obj_t * powerImageRL = lv_obj_create(tireRLCol);
-                        lv_obj_set_size(powerImageRL, 30, 30);
-                        lv_obj_set_style_bg_color(powerImageRL, lv_color_hex(0xFF0000), 0);
+            //             lv_obj_t * tempImageRL = lv_obj_create(tireRLCol);
+            //             lv_obj_set_size(tempImageRL, 30, 30);
+            //             lv_obj_set_style_bg_color(tempImageRL, lv_color_hex(0xFF0000), 0);
 
-                    lv_obj_t * tireRLImage = lv_obj_create(tireRL); // Convert to image later
-                    lv_obj_set_size(tireRLImage, 30, 30);
-                    lv_obj_set_style_bg_color(tireRLImage, lv_color_hex(0x000000), 0);
+            //             lv_obj_t * powerImageRL = lv_obj_create(tireRLCol);
+            //             lv_obj_set_size(powerImageRL, 30, 30);
+            //             lv_obj_set_style_bg_color(powerImageRL, lv_color_hex(0xFF0000), 0);
+
+            //         lv_obj_t * tireRLImage = lv_obj_create(tireRL); // Convert to image later
+            //         lv_obj_set_size(tireRLImage, 30, 30);
+            //         lv_obj_set_style_bg_color(tireRLImage, lv_color_hex(0x000000), 0);
 
 
-                lv_obj_t * tireRR = lv_obj_create(boxBottom1Col2);
-                lv_obj_center(tireRR);
-                lv_obj_set_flex_flow(tireRR, LV_FLEX_FLOW_ROW);
+            //     lv_obj_t * tireRR = lv_obj_create(boxBottom1Col2);
+            //     lv_obj_center(tireRR);
+            //     lv_obj_set_flex_flow(tireRR, LV_FLEX_FLOW_ROW);
 
-                    lv_obj_t * tireRRCol = lv_obj_create(tireRR);
-                    lv_obj_set_flex_flow(tireRRCol, LV_FLEX_FLOW_COLUMN); 
+            //         lv_obj_t * tireRRCol = lv_obj_create(tireRR);
+            //         lv_obj_set_flex_flow(tireRRCol, LV_FLEX_FLOW_COLUMN); 
 
-                        lv_obj_t * tempImageRR = lv_obj_create(tireRRCol);
-                        lv_obj_set_size(tempImageRR, 30, 30);
-                        lv_obj_set_style_bg_color(tempImageRR, lv_color_hex(0xFF0000), 0);
+            //             lv_obj_t * tempImageRR = lv_obj_create(tireRRCol);
+            //             lv_obj_set_size(tempImageRR, 30, 30);
+            //             lv_obj_set_style_bg_color(tempImageRR, lv_color_hex(0xFF0000), 0);
 
-                        lv_obj_t * powerImageRR = lv_obj_create(tireRRCol);
-                        lv_obj_set_size(powerImageRR, 30, 30);
-                        lv_obj_set_style_bg_color(powerImageRR, lv_color_hex(0xFF0000), 0);
+            //             lv_obj_t * powerImageRR = lv_obj_create(tireRRCol);
+            //             lv_obj_set_size(powerImageRR, 30, 30);
+            //             lv_obj_set_style_bg_color(powerImageRR, lv_color_hex(0xFF0000), 0);
 
-                    lv_obj_t * tireRRImage = lv_obj_create(tireRR); // Convert to image later
-                    lv_obj_set_size(tireRRImage, 30, 30);
-                    lv_obj_set_style_bg_color(tireRRImage, lv_color_hex(0x000000), 0);
+            //         lv_obj_t * tireRRImage = lv_obj_create(tireRR); // Convert to image later
+            //         lv_obj_set_size(tireRRImage, 30, 30);
+            //         lv_obj_set_style_bg_color(tireRRImage, lv_color_hex(0x000000), 0);
 
 
         lv_obj_t * boxBottom2 = lv_obj_create(flexRowBottom);
-        //lv_obj_set_flex_flow(boxBottom2, LV_FLEX_FLOW_COLUMN); --> no longer need flex column since we removed the "temperatures" label
-        lv_obj_set_flex_grow(boxBottom2, 3);
-        lv_obj_set_size(boxBottom2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_flex_flow(boxBottom2, LV_FLEX_FLOW_ROW); // --> no longer need flex column since we removed the "temperatures" label
+        lv_obj_set_flex_grow(boxBottom2, 4);
+        // lv_obj_set_size(boxBottom2, LV_PCT(100), LV_SIZE_CONTENT);
+        lv_obj_set_height(boxBottom2, TOP_HEIGHT);
         lv_obj_set_style_bg_color(boxBottom2, lv_color_hex(GR_GRAY), 0);
+        lv_obj_set_flex_align(boxBottom2, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+        lv_obj_set_style_flex_cross_place(boxBottom2, LV_FLEX_ALIGN_START, 0);
         //lv_obj_set_style_pad_all(boxBottom2, 20, 0); // Add some padding inside the box
 
             // most important temperatures to display will probably be maxCellTemp, motorTemp, inverterTemp, brakeTemp
@@ -297,18 +362,13 @@ int main() {
             // lv_obj_set_flex_align(boxBottom2, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
             // lv_label_set_text(temperature_label, "Temperatures:");
 
-            lv_obj_t * temperatures = lv_obj_create(boxBottom2);
-            lv_obj_set_flex_flow(temperatures, LV_FLEX_FLOW_ROW);
-            lv_obj_set_size(temperatures, LV_PCT(100), LV_SIZE_CONTENT);
-            lv_obj_set_flex_align(temperatures, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-
-                    lv_obj_t * cellTemp = lv_label_create(temperatures);
+                    lv_obj_t * cellTemp = lv_label_create(boxBottom2);
                     lv_label_set_text(cellTemp, "Cell: ");
 
-                    lv_obj_t * motorTemp = lv_label_create(temperatures);
+                    lv_obj_t * motorTemp = lv_label_create(boxBottom2);
                     lv_label_set_text(motorTemp, "Motor: ");
 
-                    lv_obj_t * inverterTemps = lv_obj_create(temperatures);
+                    lv_obj_t * inverterTemps = lv_obj_create(boxBottom2);
                     lv_obj_set_flex_flow(inverterTemps, LV_FLEX_FLOW_COLUMN);
                     lv_obj_set_flex_align(inverterTemps, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
                     lv_obj_set_scrollbar_mode(inverterTemps, LV_SCROLLBAR_MODE_OFF);    // gets rid of scrollbars when content within a flexbox extends past box borders
@@ -326,7 +386,7 @@ int main() {
                         lv_obj_t * inverter3 = lv_label_create(inverterTemps);
                         lv_label_set_text(inverter3, "3: ");
                     
-                    lv_obj_t * brakeTemps = lv_obj_create(temperatures);
+                    lv_obj_t * brakeTemps = lv_obj_create(boxBottom2);
                     lv_obj_set_flex_flow(brakeTemps, LV_FLEX_FLOW_COLUMN);
                     lv_obj_set_flex_align(brakeTemps, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
                     lv_obj_set_scrollbar_mode(brakeTemps, LV_SCROLLBAR_MODE_OFF);
