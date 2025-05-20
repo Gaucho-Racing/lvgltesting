@@ -95,6 +95,8 @@ int main() {
     lv_obj_t * flexCol = lv_obj_create(screen);
     lv_obj_add_style(flexCol, &flexColStyle, 0);
     lv_obj_set_style_bg_color(flexCol, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_height(flexCol, 200);
+    lv_obj_set_width(flexCol, 200);
 
     lv_obj_t * label1 = lv_label_create(flexCol);
     lv_label_set_text(label1, "Gaucho");
@@ -102,17 +104,13 @@ int main() {
     lv_obj_set_style_border_color(label1, lv_color_hex(0x00FF00), LV_PART_MAIN);  // Red border
     lv_obj_set_style_border_side(label1, LV_BORDER_SIDE_FULL, LV_PART_MAIN);
 
-    // lv_obj_t * label2 = lv_label_create(flexCol);
-    // lv_label_set_text(label2, "Racing");
-    // lv_obj_set_style_border_width(label2, 1, LV_PART_MAIN);
-    // lv_obj_set_style_border_color(label2, lv_color_hex(0x0000FF), LV_PART_MAIN);  // Red border
-    // lv_obj_set_style_border_side(label2, LV_BORDER_SIDE_FULL, LV_PART_MAIN);
+    lv_obj_t * label2 = lv_label_create(flexCol);
+    lv_label_set_text(label2, "Racing");
+    lv_obj_set_style_border_width(label2, 1, LV_PART_MAIN);
+    lv_obj_set_style_border_color(label2, lv_color_hex(0x0000FF), LV_PART_MAIN);  // Red border
+    lv_obj_set_style_border_side(label2, LV_BORDER_SIDE_FULL, LV_PART_MAIN);
 
-
-
-
-    
-                    
+              
     // --- LVGL Main Loop --- 
     uint32_t idle_time;
 
