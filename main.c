@@ -203,6 +203,7 @@ int main() {
             lv_obj_set_flex_flow(boxBottom1Col1, LV_FLEX_FLOW_COLUMN); 
 
                 lv_obj_t * tireFL = lv_obj_create(boxBottom1Col1);
+                lv_obj_center(tireFL);
                 lv_obj_set_flex_flow(tireFL, LV_FLEX_FLOW_ROW); 
 
                     lv_obj_t * tireFLCol = lv_obj_create(tireFL);
@@ -221,6 +222,7 @@ int main() {
                     lv_obj_set_style_bg_color(tireFLImage, lv_color_hex(0x000000), 0);
 
                 lv_obj_t * tireFR = lv_obj_create(boxBottom1Col1);
+                lv_obj_center(tireFR);
                 lv_obj_set_flex_flow(tireFR, LV_FLEX_FLOW_ROW); 
 
                     lv_obj_t * tireFRCol = lv_obj_create(tireFR);
@@ -242,6 +244,7 @@ int main() {
             lv_obj_set_flex_flow(boxBottom1Col2, LV_FLEX_FLOW_COLUMN); 
 
                 lv_obj_t * tireRL = lv_obj_create(boxBottom1Col2);
+                lv_obj_center(tireRL);
                 lv_obj_set_flex_flow(tireRL, LV_FLEX_FLOW_ROW);
 
                     lv_obj_t * tireRLCol = lv_obj_create(tireRL);
@@ -261,6 +264,7 @@ int main() {
 
 
                 lv_obj_t * tireRR = lv_obj_create(boxBottom1Col2);
+                lv_obj_center(tireRR);
                 lv_obj_set_flex_flow(tireRR, LV_FLEX_FLOW_ROW);
 
                     lv_obj_t * tireRRCol = lv_obj_create(tireRR);
