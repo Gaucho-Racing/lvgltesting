@@ -1,15 +1,15 @@
 [
 {
   "directory": "/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build",
-  "command": "/usr/bin/clang -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE -o CMakeFiles/lvgltest.dir/main.o -c /Users/aagrim/Workspace/gauchoRacing/lvgltesting/main.c",
+  "command": "/usr/bin/clang -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE -o CMakeFiles/lvgltest.dir/main.c.o -c /Users/aagrim/Workspace/gauchoRacing/lvgltesting/main.c",
   "file": "/Users/aagrim/Workspace/gauchoRacing/lvgltesting/main.c",
-  "output": "CMakeFiles/lvgltest.dir/main.o"
+  "output": "CMakeFiles/lvgltest.dir/main.c.o"
 },
 {
   "directory": "/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build",
-  "command": "/usr/bin/clang -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE -o CMakeFiles/lvgltest.dir/mainGUI.o -c /Users/aagrim/Workspace/gauchoRacing/lvgltesting/mainGUI.c",
+  "command": "/usr/bin/clang -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE -o CMakeFiles/lvgltest.dir/mainGUI.c.o -c /Users/aagrim/Workspace/gauchoRacing/lvgltesting/mainGUI.c",
   "file": "/Users/aagrim/Workspace/gauchoRacing/lvgltesting/mainGUI.c",
-  "output": "CMakeFiles/lvgltest.dir/mainGUI.o"
+  "output": "CMakeFiles/lvgltest.dir/mainGUI.c.o"
 },
 {
   "directory": "/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build",

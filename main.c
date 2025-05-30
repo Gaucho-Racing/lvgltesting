@@ -36,6 +36,8 @@ void initCellTemps() {
     lv_obj_center(canvas);
 
     lvglObjects.gridCanvas = canvas;
+
+    lv_canvas_init_layer(lvglObjects.gridCanvas, &lvglObjects.layer);
 }
 
 void initLVGL() {
@@ -47,7 +49,7 @@ void initLVGL() {
 }
 
 void refreshScreen(IncomingData data) {
-    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x00ff00), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0xff0000), LV_PART_MAIN);
     if (data.debugMessage[0] != '\0') {
         lv_label_set_text(lvglObjects.debugText.text, data.debugMessage);
         lv_obj_clear_flag(lvglObjects.debugText.panel, LV_OBJ_FLAG_HIDDEN);
@@ -55,10 +57,7 @@ void refreshScreen(IncomingData data) {
         lv_obj_add_flag(lvglObjects.debugText.panel, LV_OBJ_FLAG_HIDDEN);
     }
 
-    lv_canvas_fill_bg(lvglObjects.gridCanvas, lv_color_hex(0x0000ff), LV_OPA_COVER);
-
-    lv_layer_t layer;
-    lv_canvas_init_layer(lvglObjects.gridCanvas, &layer);
+    lv_canvas_fill_bg(lvglObjects.gridCanvas, lv_color_hex(0x00f0ff), LV_OPA_COVER);
 
     lv_draw_rect_dsc_t rectDesc;
     lv_draw_rect_dsc_init(&rectDesc);
@@ -69,11 +68,9 @@ void refreshScreen(IncomingData data) {
 
     lv_area_t coords = {0, 0, 50, 40};
 
-    lv_draw_rect(&layer, &rectDesc, &coords);
-    coords = (lv_area_t){50, 40, 70, 90};
-    lv_draw_rect(&layer, &rectDesc, &coords);
+    lv_draw_rect(&lvglObjects.layer, &rectDesc, &coords);
 
-    lv_canvas_finish_layer(lvglObjects.gridCanvas, &layer);
+    lv_canvas_finish_layer(lvglObjects.gridCanvas, &lvglObjects.layer);
 }
 
 int main() {
@@ -84,10 +81,18 @@ int main() {
 
     initLVGL();
 
+    uint32_t lastTick = SDL_GetTicks();
+
+    int k = 0;
     while (1) {
-        lv_tick_inc(1000);
-        lv_task_handler();
+        SDL_Delay(5);
         refreshScreen(incomingData);
-        SDL_Delay(1000);
+        if (k++ == 100) {
+            strcpy(incomingData.debugMessage, "hello world");
+        }
+        uint32_t current = SDL_GetTicks();
+        lv_tick_inc(current-lastTick);
+        lastTick = current;
+        lv_timer_handler();
     }
 }

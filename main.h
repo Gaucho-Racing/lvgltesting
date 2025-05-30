@@ -27,6 +27,7 @@ typedef struct {
     } chart;
 
     lv_obj_t * gridCanvas;
+    lv_layer_t layer;
 } LvglObjects;
 
 extern volatile LvglObjects lvglObjects;

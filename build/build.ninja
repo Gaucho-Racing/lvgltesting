@@ -49,17 +49,17 @@ cmake_ninja_workdir = /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/
 
 build cmake_object_order_depends_target_lvgltest: phony || cmake_object_order_depends_target_lvgl
 
-build CMakeFiles/lvgltest.dir/main.o: C_COMPILER__lvgltest_unscanned_Debug /Users/aagrim/Workspace/gauchoRacing/lvgltesting/main.c || cmake_object_order_depends_target_lvgltest
+build CMakeFiles/lvgltest.dir/main.c.o: C_COMPILER__lvgltest_unscanned_Debug /Users/aagrim/Workspace/gauchoRacing/lvgltesting/main.c || cmake_object_order_depends_target_lvgltest
   DEFINES = -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE
-  DEP_FILE = CMakeFiles/lvgltest.dir/main.o.d
+  DEP_FILE = CMakeFiles/lvgltest.dir/main.c.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE
   INCLUDES = -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl
   OBJECT_DIR = CMakeFiles/lvgltest.dir
   OBJECT_FILE_DIR = CMakeFiles/lvgltest.dir
 
-build CMakeFiles/lvgltest.dir/mainGUI.o: C_COMPILER__lvgltest_unscanned_Debug /Users/aagrim/Workspace/gauchoRacing/lvgltesting/mainGUI.c || cmake_object_order_depends_target_lvgltest
+build CMakeFiles/lvgltest.dir/mainGUI.c.o: C_COMPILER__lvgltest_unscanned_Debug /Users/aagrim/Workspace/gauchoRacing/lvgltesting/mainGUI.c || cmake_object_order_depends_target_lvgltest
   DEFINES = -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE
-  DEP_FILE = CMakeFiles/lvgltest.dir/mainGUI.o.d
+  DEP_FILE = CMakeFiles/lvgltest.dir/mainGUI.c.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -D_THREAD_SAFE
   INCLUDES = -I/opt/homebrew/include -I/opt/homebrew/include/SDL2 -I/Users/aagrim/Workspace/gauchoRacing/lvgltesting/. -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/lvgl -isystem /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl
   OBJECT_DIR = CMakeFiles/lvgltest.dir
@@ -73,7 +73,7 @@ build CMakeFiles/lvgltest.dir/mainGUI.o: C_COMPILER__lvgltest_unscanned_Debug /U
 #############################################
 # Link the executable lvgltest
 
-build lvgltest: C_EXECUTABLE_LINKER__lvgltest_Debug CMakeFiles/lvgltest.dir/main.o CMakeFiles/lvgltest.dir/mainGUI.o | lvgl/lib/liblvgl.a /opt/homebrew/lib/libSDL2.dylib || lvgl/lib/liblvgl.a
+build lvgltest: C_EXECUTABLE_LINKER__lvgltest_Debug CMakeFiles/lvgltest.dir/main.c.o CMakeFiles/lvgltest.dir/mainGUI.c.o | lvgl/lib/liblvgl.a /opt/homebrew/lib/libSDL2.dylib || lvgl/lib/liblvgl.a
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = lvgl/lib/liblvgl.a  /opt/homebrew/lib/libSDL2.dylib
   OBJECT_DIR = CMakeFiles/lvgltest.dir
@@ -8062,11 +8062,6 @@ build all: phony lvgltest lvgl/all
 # Folder: /Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl
 
 build lvgl/all: phony lvgl/lib/liblvgl.a lvgl/lib/liblvgl_thorvg.a lvgl/lib/liblvgl_examples.a lvgl/lib/liblvgl_demos.a
-
-# =============================================================================
-# Unknown Build Time Dependencies.
-# Tell Ninja that they may appear as side effects of build rules
-# otherwise ordered by order-only dependencies.
 
 # =============================================================================
 # Built-in targets
