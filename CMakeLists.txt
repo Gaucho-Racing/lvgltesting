@@ -15,6 +15,7 @@ target_compile_options(lvgl PUBLIC
 
 target_sources(lvgltest PRIVATE
     main.c
+    mainGUI.c
 )
 target_link_libraries(lvgltest
     lvgl

@@ -1,0 +1,17 @@
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/lvgltest.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/edit_cache.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/rebuild_cache.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/list_install_components.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/install.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/install/local.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/CMakeFiles/install/strip.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/lvgl.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/lvgl_thorvg.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/lvgl_examples.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/lvgl_demos.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/edit_cache.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/rebuild_cache.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/list_install_components.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/install.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/install/local.dir
+/Users/aagrim/Workspace/gauchoRacing/lvgltesting/build/lvgl/CMakeFiles/install/strip.dir
