@@ -1,16 +1,37 @@
-Make sure to clone this repo recursively using this command: <br /> 
-```git clone --recurse-submodules -j8 https://github.com/Gaucho-Racing/lvgltesting.git``` <br />
+# LVGL Testing
+## Git Submodules
+### First-Time Usage
+Clone the repo and the submodules:
+```bash
+git clone --recurse-submodules https://github.com/Gaucho-Racing/lvgltesting.git
+```
 
-Depends on CMake, pkgconf, and SDL2 <br />
+<br>
 
-If using Homebrew: <br />
-```brew install pkgconf``` <br />
-```brew install sdl2``` <br />
+Or if you already cloned the repo and just need the submodules:
+```bash
+git submodule init
+git submodule update --remote
+```
+### Updating LVGL
+```bash
+git submodule update --remote
+```
+## General Notes
+For any given board, branch off of `main` to a new branch and make your changes and code work there.
 
-Compile with
-`cmake .`
-and then
-`make`
-or whatever build system thing cmake does on ur os
+If you're on macOS and seeing red squiggly lines around `#include <SDL2/SDL.h>`, just try building first. It should work; the CMake script will search for SDL2 on your computer. 
 
-If you're on macOS and seeing red squiggly lines around ```#include <SDL2/SDL.h>```, just try building first. It should work; the CMake script will search for SDL2 on your computer. 
+## Dependencies
+This project depends on CMake, pkgconf, and SDL2. You can optionally use VS Code which will provide a `Launch` configuration.
+
+If using Linux:
+```bash
+sudo apt install libsdl2-dev pkgconf
+```
+
+If using Homebrew:
+```zsh
+brew install pkgconf
+brew install sdl2
+```
