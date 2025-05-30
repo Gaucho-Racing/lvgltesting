@@ -1,7 +1,7 @@
-/Makefile
-/CMakeCache.txt
-/CMakeFiles/
-/cmake_install.cmake
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
 build
 
 .*
@@ -9,3 +9,5 @@ build
 !.gitattributes
 !.gitmodules
 !.vscode
+
+lvgltest
