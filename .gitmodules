@@ -1,4 +1,4 @@
 [submodule "lvgl"]
 	path = lvgl
 	url = ../../lvgl/lvgl.git
-	branch = master
+	branch = feature/esp_ppa
