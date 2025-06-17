@@ -22,6 +22,8 @@ typedef struct {
 static lv_style_t screenStyle;
 static lv_style_t flexRowStyle;
 static lv_style_t flexColumnStyle;
+static lv_style_t infoTextStyle;
+static lv_style_t infoBoxStyle;
 
 const size_t SCREEN_WIDTH_PX = 800;
 const size_t SCREEN_HEIGHT_PX = 480;
@@ -73,6 +75,16 @@ void styleSetup(void) {
     lv_style_set_flex_flow(&flexColumnStyle, LV_FLEX_FLOW_COLUMN);
     lv_style_set_layout(&flexColumnStyle, LV_LAYOUT_FLEX);
     lv_style_set_border_width(&flexColumnStyle, 0);
+
+    lv_style_init(&infoTextStyle);
+    lv_style_set_text_color(&infoTextStyle, lv_color_white());
+    lv_style_set_text_font(&infoTextStyle, &lv_font_montserrat_20);
+
+    lv_style_init(&infoBoxStyle);
+    lv_style_set_bg_color(&infoBoxStyle, lv_color_black());
+    lv_style_set_bg_opa(&infoBoxStyle, 100);
+    lv_style_set_pad_all(&infoBoxStyle, 20);
+    lv_style_set_border_width(&infoBoxStyle, 0);
 }
 
 void displaySetup(void) {
@@ -94,23 +106,20 @@ void displaySetup(void) {
 
 
 void topSetup(lv_obj_t * parent_obj) {
+    /*
     lv_obj_t * flexRowTop = lv_obj_create(parent_obj);
     lv_obj_add_style(flexRowTop, &flexRowStyle, 0);
     lv_obj_set_flex_align(flexRowTop, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_SPACE_EVENLY);
     lv_obj_set_style_bg_opa(flexRowTop, 0, 0);
+    */
 
-        lv_obj_t * boxTop1 = lv_obj_create(flexRowTop);
+        lv_obj_t * boxTop1 = lv_obj_create(parent_obj);
         lv_obj_set_flex_flow(boxTop1, LV_FLEX_COLUMN);
-        lv_obj_set_flex_grow(boxTop1, 2);
-        lv_obj_set_style_flex_cross_place(boxTop1, LV_FLEX_ALIGN_CENTER, 0);
+        lv_obj_set_style_flex_cross_place(boxTop1, LV_FLEX_ALIGN_START, 0);
         lv_obj_set_style_flex_main_place(boxTop1, LV_FLEX_ALIGN_SPACE_EVENLY, 0);
         lv_obj_set_size(boxTop1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-        lv_obj_set_height(boxTop1, TOP_HEIGHT);
-        lv_obj_set_style_bg_color(boxTop1, lv_color_black(), 0);
-        lv_obj_set_style_bg_opa(boxTop1, 100, 0);
-        lv_obj_set_style_pad_all(boxTop1, 20, 0);
-        lv_obj_set_style_border_width(boxTop1, 0, 0);
-        lv_obj_set_style_text_color(boxTop1, lv_color_white(), 0);
+        lv_obj_add_style(boxTop1, &infoBoxStyle, 0);
+        lv_obj_add_style(boxTop1, &infoTextStyle, 0);
 
             voltage = lv_label_create(boxTop1);
             lv_label_set_text_static(voltage, "100 V");
@@ -119,6 +128,7 @@ void topSetup(lv_obj_t * parent_obj) {
             power = lv_label_create(boxTop1);
             lv_label_set_text_static(power, "99 kW");
 
+    /*
         lv_obj_t * boxTop2 = lv_obj_create(flexRowTop);
         lv_obj_set_flex_flow(boxTop2, LV_FLEX_COLUMN);
         lv_obj_set_flex_grow(boxTop2, 8); // TODO: edit later for real screen
@@ -164,10 +174,12 @@ void topSetup(lv_obj_t * parent_obj) {
                 regen = lv_label_create(boxTop3);
                 lv_obj_set_width(regen, 100);
                 lv_label_set_text_static(regen, "0");
+                */
 }
 
 void bottomSetup(lv_obj_t * parent_obj) {
 
+    /*
     // Code for bottom flex row
     lv_obj_t * flexRowBottom = lv_obj_create(parent_obj);
     lv_obj_add_style(flexRowBottom, &flexRowStyle, 0);
@@ -202,6 +214,7 @@ void bottomSetup(lv_obj_t * parent_obj) {
                     // lv_obj_set_scrollbar_mode(cellTempBox, LV_SCROLLBAR_MODE_OFF);    // gets rid of scrollbars when content within a flexbox extends past box borders
                     // lv_obj_set_size(cellTempBox, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
 
+                    */
                         cell = lv_label_create(boxBottom2);
                         lv_label_set_text_static(cell, "Cell:\n30 C");
 
