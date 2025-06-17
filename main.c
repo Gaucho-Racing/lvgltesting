@@ -135,9 +135,11 @@ void topSetup(lv_obj_t * parent_obj) {
         lv_obj_set_content_height(boxTop2, lv_pct(100));
         lv_obj_set_size(boxTop2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_height(boxTop2, TOP_HEIGHT);
-        lv_obj_set_style_bg_color(boxTop2, lv_color_hex(GR_GRAY), 0);
+        lv_obj_set_style_bg_color(boxTop2, lv_color_black(), 0);
+        lv_obj_set_style_bg_opa(boxTop2, 100, 0);
         lv_obj_set_style_pad_all(boxTop2, 20, 0);
         lv_obj_set_flex_align(boxTop2, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+        lv_obj_set_style_text_color(boxTop2, lv_color_white(), 0);
         // lv_obj_set_style_flex_cross_place(boxTop2, LV_FLEX_ALIGN_CENTER, 0);
         // lv_obj_set_style_flex_main_place(boxTop2, LV_FLEX_ALIGN_SPACE_EVENLY, 0);
 
@@ -148,7 +150,7 @@ void topSetup(lv_obj_t * parent_obj) {
 
             LV_FONT_DECLARE(speedometer_font)
             speed = lv_label_create(boxTop2);
-            lv_obj_set_style_text_font(speed, &lv_font_montserrat_44, 0);
+            lv_obj_set_style_text_font(speed, &lv_font_montserrat_44, 0);   // TODO Can we go bigger?
             lv_label_set_text_static(speed, "100");
         
             state = lv_label_create(boxTop2);
@@ -167,19 +169,18 @@ void topSetup(lv_obj_t * parent_obj) {
 
                 current = lv_label_create(boxTop3);
                 lv_obj_set_width(current, 100);
-                lv_label_set_text_static(current, "0");
+                lv_label_set_text_static(current, "0 A");
                 torqueMapping = lv_label_create(boxTop3);
                 lv_obj_set_width(torqueMapping, 100);
-                lv_label_set_text_static(torqueMapping, "0");
+                lv_label_set_text_static(torqueMapping, "0 TorqueMap");
                 regen = lv_label_create(boxTop3);
                 lv_obj_set_width(regen, 100);
-                lv_label_set_text_static(regen, "0");
+                lv_label_set_text_static(regen, "0 Regen");
                 */
 }
 
 void bottomSetup(lv_obj_t * parent_obj) {
 
-    /*
     // Code for bottom flex row
     lv_obj_t * flexRowBottom = lv_obj_create(parent_obj);
     lv_obj_add_style(flexRowBottom, &flexRowStyle, 0);
@@ -214,7 +215,6 @@ void bottomSetup(lv_obj_t * parent_obj) {
                     // lv_obj_set_scrollbar_mode(cellTempBox, LV_SCROLLBAR_MODE_OFF);    // gets rid of scrollbars when content within a flexbox extends past box borders
                     // lv_obj_set_size(cellTempBox, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
 
-                    */
                         cell = lv_label_create(boxBottom2);
                         lv_label_set_text_static(cell, "Cell:\n30 C");
 
