@@ -17,7 +17,7 @@ target_compile_options(lvgl PUBLIC
 target_sources(lvgltest PRIVATE
     main.c
     dashbg.c
-    speedometer_font.c
+    lekton_200.c
 )
 target_link_libraries(lvgltest
     lvgl
