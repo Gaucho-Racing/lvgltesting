@@ -6,16 +6,7 @@
 #define GR_PINK 0xEF0DA1
 #define GR_PRPL 0x7920FF
 #define GR_GRAY 0x9AA3B0
-#define TOP_HEIGHT 200
-#define GRID_ROWS 2
-#define GRID_COLUMNS 4
 
-typedef struct {
-    lv_obj_t * panel;
-    lv_obj_t * text;
-} DebugMsg;
-
-static lv_style_t screenStyle;
 static lv_style_t infoTextStyle;
 static lv_style_t infoBoxStyle;
 
@@ -34,13 +25,10 @@ void styleSetup(void);
 void displaySetup(void);
 void topSetup(lv_obj_t * parent_obj);
 void bottomSetup(lv_obj_t * parent_obj);
-void initDebugMsg(lv_obj_t * parent_obj);
+void updateDisplay(int voltage, int SoC, int power, int speed, int cellTemp, int motorTemp, int inverterTemp, const char *state, char *message);
 // static void ecu_update_timer_cb(lv_timer_t * timer);
-void createGrid(lv_obj_t * parent_obj);
 
 void styleSetup(void) {
-    lv_style_init(&screenStyle);
-
     lv_style_init(&infoTextStyle);
     lv_style_set_text_color(&infoTextStyle, lv_color_white());
     lv_style_set_text_font(&infoTextStyle, &lv_font_montserrat_20);
@@ -58,7 +46,6 @@ void displaySetup(void) {
 
     LV_IMAGE_DECLARE(dashbg);
     lv_obj_set_style_bg_image_src(lv_screen_active(), &dashbg, 0);
-    lv_obj_add_style(lv_screen_active(), &screenStyle, 0);
 
 
     topSetup(lv_screen_active());
@@ -77,11 +64,8 @@ void topSetup(lv_obj_t * parent_obj) {
     lv_obj_add_style(boxTop1, &infoTextStyle, 0);
 
         voltage_l = lv_label_create(boxTop1);
-        //lv_label_set_text_static(voltage_l, "100 V");
         SoC_l = lv_label_create(boxTop1);
-        //lv_label_set_text_static(SoC_l, "SoC: 16%");
         power_l = lv_label_create(boxTop1);
-        //lv_label_set_text_static(power_l, "99 kW");
 
     lv_obj_t * boxTop2 = lv_obj_create(parent_obj);
     lv_obj_set_align(boxTop2, LV_ALIGN_TOP_MID);
@@ -96,7 +80,6 @@ void topSetup(lv_obj_t * parent_obj) {
         speed_l = lv_label_create(boxTop2);
         lv_obj_center(speed_l);
         lv_obj_set_style_text_font(speed_l, &lekton_200, 0);
-        //lv_label_set_text_static(speed_l, "00 ");
 
         lv_obj_t * mph = lv_label_create(boxTop2);
         lv_obj_set_pos(mph, 270, 240);
@@ -107,7 +90,6 @@ void topSetup(lv_obj_t * parent_obj) {
         lv_obj_align(state_l, LV_ALIGN_CENTER, 0, 100);
         lv_obj_set_style_text_align(state_l, LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_style_text_font(state_l, &lv_font_montserrat_20, 0);
-        //lv_label_set_text_static(state_l, "DRIVE ACTIVE REGEN");
 
     lv_obj_t * boxTop3 = lv_obj_create(parent_obj);
     lv_obj_set_align(boxTop3, LV_ALIGN_TOP_RIGHT);
@@ -146,7 +128,6 @@ void bottomSetup(lv_obj_t * parent_obj)
         lv_obj_set_style_radius(chargeMeter, 5, LV_PART_MAIN);
         lv_obj_set_style_radius(chargeMeter, 5, LV_PART_INDICATOR);
         lv_obj_set_style_bg_color(chargeMeter, lv_color_hex(GR_PINK), LV_PART_INDICATOR);
-        lv_bar_set_value(chargeMeter, 0, LV_ANIM_OFF);
 
     lv_obj_t * debugPanel = lv_obj_create(parent_obj);
     lv_obj_set_size(debugPanel, 390, 55);
@@ -176,10 +157,9 @@ void bottomSetup(lv_obj_t * parent_obj)
         lv_obj_set_style_radius(powerMeter, 5, LV_PART_INDICATOR);
         lv_obj_set_style_bg_color(powerMeter, lv_color_hex(GR_PRPL), LV_PART_INDICATOR);
         lv_bar_set_range(powerMeter, 0, 80);
-        lv_bar_set_value(powerMeter, 0, LV_ANIM_OFF);
 }
 
-void updateGUI(int voltage, int SoC, int power, int speed, int cellTemp, int motorTemp, int inverterTemp, const char *state, char *message) {
+void updateDisplay(int voltage, int SoC, int power, int speed, int cellTemp, int motorTemp, int inverterTemp, const char *state, char *message) {
     lv_label_set_text_fmt(voltage_l, "%d V", voltage);
     lv_label_set_text_fmt(SoC_l, "SoC: %d%%", SoC);
     lv_label_set_text_fmt(power_l, "%d kW", power);
